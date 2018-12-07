@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.dao.IfileMapper">
+  <resultMap id="BaseResultMap" type="com.yang.model.Ifile">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="fname" jdbcType="VARCHAR" property="fname" />
+    <result column="danshuang" jdbcType="VARCHAR" property="danshuang" />
+    <result column="zhizhang" jdbcType="VARCHAR" property="zhizhang" />
+    <result column="caiyin" jdbcType="VARCHAR" property="caiyin" />
+    <result column="jiaji" jdbcType="VARCHAR" property="jiaji" />
+    <result column="yema" jdbcType="VARCHAR" property="yema" />
+    <result column="money" jdbcType="VARCHAR" property="money" />
+    <result column="zhuangtai" jdbcType="VARCHAR" property="zhuangtai" />
+    <result column="jujue" jdbcType="VARCHAR" property="jujue" />
+    <result column="ftime" jdbcType="TIMESTAMP" property="ftime" />
+    <result column="ikey" jdbcType="VARCHAR" property="ikey" />
+    <result column="fenshu" jdbcType="VARCHAR" property="fenshu" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yang.model.Ifile">
+    <result column="beizhu" jdbcType="LONGVARCHAR" property="beizhu" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fid, uid, fname, danshuang, zhizhang, caiyin, jiaji, yema, money, zhuangtai, jujue,
+    ftime, ikey, fenshu
+  </sql>
+  <sql id="Blob_Column_List">
+    beizhu
+  </sql>
+
+  <select id="selectFile" parameterType="java.sql.Timestamp" resultMap="ResultMapWithBLOBs">
+    select
+    fid,fname,ikey
+    from dyd_file
+    where ftime &lt;= #{ftime,jdbcType=TIMESTAMP}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dyd_file
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUid" parameterType="com.yang.model.Ifile" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dyd_file
+    where uid = #{uid,jdbcType=INTEGER} and zhuangtai = #{zhuangtai,jdbcType=VARCHAR} and money is not null order by ftime desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dyd_file
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByList" parameterType="java.util.List">
+    delete from dyd_file
+    where fid in
+    <foreach collection="list" item="f" index="index" open="(" close=")" separator=",">
+    #{f.fid,jdbcType=INTEGER}
+  </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.yang.model.Ifile" useGeneratedKeys="true" keyProperty="fid">
+    insert into dyd_file (uid, fname,
+      danshuang, zhizhang, caiyin,
+      jiaji, yema, money,
+      jujue,
+      ikey, beizhu,fenshu)
+    values (#{uid,jdbcType=INTEGER}, #{fname,jdbcType=VARCHAR},
+      #{danshuang,jdbcType=VARCHAR}, #{zhizhang,jdbcType=VARCHAR}, #{caiyin,jdbcType=VARCHAR},
+      #{jiaji,jdbcType=VARCHAR}, #{yema,jdbcType=VARCHAR}, #{money,jdbcType=VARCHAR},
+      #{jujue,jdbcType=VARCHAR},
+      #{ikey,jdbcType=VARCHAR}, #{beizhu,jdbcType=LONGVARCHAR}, #{fenshu,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yang.model.Ifile">
+    insert into dyd_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="fname != null">
+        fname,
+      </if>
+      <if test="danshuang != null">
+        danshuang,
+      </if>
+      <if test="zhizhang != null">
+        zhizhang,
+      </if>
+      <if test="caiyin != null">
+        caiyin,
+      </if>
+      <if test="jiaji != null">
+        jiaji,
+      </if>
+      <if test="yema != null">
+        yema,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="zhuangtai != null">
+        zhuangtai,
+      </if>
+      <if test="jujue != null">
+        jujue,
+      </if>
+      <if test="ftime != null">
+        ftime,
+      </if>
+      <if test="ikey != null">
+        ikey,
+      </if>
+      <if test="beizhu != null">
+        beizhu,
+      </if>
+      <if test="fenshu != null">
+        fenshu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="fname != null">
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="danshuang != null">
+        #{danshuang,jdbcType=VARCHAR},
+      </if>
+      <if test="zhizhang != null">
+        #{zhizhang,jdbcType=VARCHAR},
+      </if>
+      <if test="caiyin != null">
+        #{caiyin,jdbcType=VARCHAR},
+      </if>
+      <if test="jiaji != null">
+        #{jiaji,jdbcType=VARCHAR},
+      </if>
+      <if test="yema != null">
+        #{yema,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null">
+        #{zhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="jujue != null">
+        #{jujue,jdbcType=VARCHAR},
+      </if>
+      <if test="ftime != null">
+        #{ftime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ikey != null">
+        #{ikey,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        #{beizhu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fenshu != null">
+        #{fenshu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yang.model.Ifile">
+    update dyd_file
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="fname != null">
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="danshuang != null">
+        danshuang = #{danshuang,jdbcType=VARCHAR},
+      </if>
+      <if test="zhizhang != null">
+        zhizhang = #{zhizhang,jdbcType=VARCHAR},
+      </if>
+      <if test="caiyin != null">
+        caiyin = #{caiyin,jdbcType=VARCHAR},
+      </if>
+      <if test="jiaji != null">
+        jiaji = #{jiaji,jdbcType=VARCHAR},
+      </if>
+      <if test="yema != null">
+        yema = #{yema,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null">
+        zhuangtai = #{zhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="jujue != null">
+        jujue = #{jujue,jdbcType=VARCHAR},
+      </if>
+      <if test="ftime != null">
+        ftime = #{ftime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ikey != null">
+        ikey = #{ikey,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        beizhu = #{beizhu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fenshu != null">
+        fenshu = #{fenshu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yang.model.Ifile">
+    update dyd_file
+    set uid = #{uid,jdbcType=INTEGER},
+      fname = #{fname,jdbcType=VARCHAR},
+      danshuang = #{danshuang,jdbcType=VARCHAR},
+      zhizhang = #{zhizhang,jdbcType=VARCHAR},
+      caiyin = #{caiyin,jdbcType=VARCHAR},
+      jiaji = #{jiaji,jdbcType=VARCHAR},
+      yema = #{yema,jdbcType=VARCHAR},
+      money = #{money,jdbcType=VARCHAR},
+      zhuangtai = #{zhuangtai,jdbcType=VARCHAR},
+      jujue = #{jujue,jdbcType=VARCHAR},
+      ftime = #{ftime,jdbcType=TIMESTAMP},
+      ikey = #{ikey,jdbcType=VARCHAR},
+      beizhu = #{beizhu,jdbcType=LONGVARCHAR},
+      fenshu = #{fenshu,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yang.model.Ifile">
+    update dyd_file
+    set danshuang = #{danshuang,jdbcType=VARCHAR},
+      zhizhang = #{zhizhang,jdbcType=VARCHAR},
+      caiyin = #{caiyin,jdbcType=VARCHAR},
+      jiaji = #{jiaji,jdbcType=VARCHAR},
+      yema = #{yema,jdbcType=VARCHAR},
+      money = #{money,jdbcType=VARCHAR},
+      fenshu = #{fenshu,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>

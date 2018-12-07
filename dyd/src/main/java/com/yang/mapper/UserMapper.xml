@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.yang.model.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="uphone" jdbcType="VARCHAR" property="uphone" />
+    <result column="uapart" jdbcType="VARCHAR" property="uapart" />
+    <result column="uzifu" jdbcType="VARCHAR" property="uzifu" />
+    <result column="upwd" jdbcType="VARCHAR" property="upwd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, uname, uphone, uapart, uzifu, upwd
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dyd_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <select id="loginVerify" parameterType="com.yang.model.User" resultType="java.lang.Integer">
+    select
+    count(*)
+    from dyd_user
+    where uphone = #{uphone,jdbcType=VARCHAR} and upwd = #{upwd,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByLogin" parameterType="com.yang.model.User" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dyd_user
+    where uphone = #{uphone,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dyd_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yang.model.User">
+    insert into dyd_user (uid, uname, uphone, 
+      uapart, uzifu, upwd
+      )
+    values (#{uid,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR}, #{uphone,jdbcType=VARCHAR},
+      #{uapart,jdbcType=VARCHAR}, #{uzifu,jdbcType=VARCHAR}, #{upwd,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yang.model.User">
+    insert into dyd_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="uname != null">
+        uname,
+      </if>
+      <if test="uphone != null">
+        uphone,
+      </if>
+      <if test="uapart != null">
+        uapart,
+      </if>
+      <if test="uzifu != null">
+        uzifu,
+      </if>
+      <if test="upwd != null">
+        upwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+        #{uname,jdbcType=VARCHAR},
+      <if test="uphone != null">
+        #{uphone,jdbcType=VARCHAR},
+      </if>
+        #{uapart,jdbcType=VARCHAR},
+        #{uzifu,jdbcType=VARCHAR},
+      <if test="upwd != null">
+        #{upwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yang.model.User">
+    update dyd_user
+    <set>
+      <if test="uname != null">
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="uphone != null">
+        uphone = #{uphone,jdbcType=VARCHAR},
+      </if>
+      <if test="uapart != null">
+        uapart = #{uapart,jdbcType=VARCHAR},
+      </if>
+      <if test="uzifu != null">
+        uzifu = #{uzifu,jdbcType=VARCHAR},
+      </if>
+      <if test="upwd != null">
+        upwd = #{upwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yang.model.User">
+    update dyd_user
+    set uname = #{uname,jdbcType=VARCHAR},
+      uapart = #{uapart,jdbcType=VARCHAR},
+      uzifu = #{uzifu,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updatePassword" parameterType="com.yang.model.User">
+    update dyd_user
+    set upwd = #{upwd,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>

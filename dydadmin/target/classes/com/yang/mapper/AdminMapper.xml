@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.dao.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.yang.model.Admin">
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="aphone" jdbcType="VARCHAR" property="aphone" />
+    <result column="apwd" jdbcType="VARCHAR" property="apwd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    aid, aphone, apwd
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dyd_admin
+    where aid = #{aid,jdbcType=INTEGER}
+  </select>
+  <select id="loginVerify" parameterType="com.yang.model.Admin" resultType="java.lang.Integer">
+    select
+    count(*)
+    from dyd_admin
+    where aphone = #{aphone,jdbcType=VARCHAR} and apwd = #{apwd,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByLogin" parameterType="com.yang.model.Admin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dyd_admin
+    where aphone = #{aphone,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dyd_admin
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yang.model.Admin">
+    insert into dyd_admin (aid, aphone,
+     upwd
+      )
+    values (#{aid,jdbcType=INTEGER}, #{aphone,jdbcType=VARCHAR},
+      #{apwd,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yang.model.Admin">
+    insert into dyd_admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="aphone != null">
+        aphone,
+      </if>
+      <if test="apwd != null">
+        apwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="aphone != null">
+        #{aphone,jdbcType=VARCHAR},
+      </if>
+      <if test="apwd != null">
+        #{apwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yang.model.Admin">
+    update dyd_admin
+    <set>
+      <if test="aphone != null">
+        aphone = #{aphone,jdbcType=VARCHAR},
+      </if>
+      <if test="apwd != null">
+        apwd = #{upwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updatePassword" parameterType="com.yang.model.Admin">
+    update dyd_admin
+    set apwd = #{apwd,jdbcType=VARCHAR}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+</mapper>
